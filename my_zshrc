@@ -1,6 +1,10 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+############## ITerm colors
+export TERM="xterm-256color"
+##############
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -8,7 +12,8 @@ export ZSH=$HOME/.oh-my-zsh
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME="powerlevel10k/powerlevel10k"
+# POWERLEVEL9K_MODE='awesome-fontconfig'
 POWERLEVEL9K_MODE='nerdfont-complete'
 
 # Set list of themes to pick from when loading at random
@@ -67,9 +72,13 @@ plugins=(git
 zsh-syntax-highlighting
 zsh-autosuggestions
 colored-man-pages
+#z
+#fz
+you-should-use
+colorize
 )
 
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status anaconda root_indicator history time)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status anaconda history) 
 
 DEFAULT_USER=$(whoami)
 
@@ -119,14 +128,17 @@ export SSH_KEY_PATH="~/.ssh/id_rsa.pub"
 # Add Chapel source to path..uncomment the line below to do the same ##
 
 # source /Users/apple/chapel-1.20.0/util/setchplenv.bash
-source /Users/apple/repos/chapel/util/setchplenv.bash
+# source /Users/apple/repos/chapel/util/setchplenv.bash
+# source /Users/apple/repos/chapel-llvm-GPU/util/setchplenv.bash
+# export CHPL_DEVELOPER=true
+# export CHPL_LLVM=llvm
 #########################################################################
 
 alias sac='conda activate'
 alias sde='conda deactivate'
 alias textedit='open -a TextEdit'
 alias gps='gps &|'
-alias julia="/Applications/Julia-1.2.app/Contents/Resources/julia/bin/julia"
+alias julia="/Applications/Julia-1.4.app/Contents/Resources/julia/bin/julia"
 
 #########################################################################
 # Arkouda Settings
@@ -142,7 +154,9 @@ alias julia="/Applications/Julia-1.2.app/Contents/Resources/julia/bin/julia"
 # Homebrew
 # export PATH="/usr/local/sbin:$PATH"
 
-# export PATH="$HOME/.cargo/bin:$PATH"
+# Rust
+export PATH="$HOME/.cargo/bin:$PATH"
+source $HOME/.cargo/env
 
 # . ~/ros2_install/ros2-osx/setup.zsh
 # export DARWIN=/Users/apple/drwn
@@ -152,5 +166,49 @@ alias julia="/Applications/Julia-1.2.app/Contents/Resources/julia/bin/julia"
 
 #####################
 #JAVACC BOG
-export PATH=$PATH:/Users/apple/repos/javacc-7.0.5/scripts
+# export PATH=$PATH:/Users/apple/repos/javacc-7.0.5/scripts
 #####################
+# export PATH="/usr/local/opt/flex/bin:$PATH"
+# export PATH="/usr/local/opt/bison@2.7/bin:$PATH"
+# export PATH="/usr/local/opt/m4/bin:$PATH"
+
+################## Chapel thread count control
+# export CHPL_RT_NUM_THREADS_PER_LOCALE='MAX_LOGICAL'
+##################
+
+# export PATH="/usr/local/go/bin":$PATH
+export PATH="/Users/apple/go/bin":$PATH
+
+# Replace all strings in files recursively
+# Usage: perlReplaceAll to_replace replace_with extension_name
+perlReplaceString() {
+	escaped_to_replace=$(printf '%s\n' "$1" | sed -e 's/[]\/$*.^[]/\\&/g');
+	escaped_replace_with=$(printf '%s\n' "$2" | sed -e 's/[]\/$*.^[]/\\&/g');
+	str='s/'"$escaped_to_replace"'/'"$escaped_replace_with"'/g'
+	perl -pi -w -e $str *.$3
+}
+perlReplaceAll() {
+	to_replace=$1
+	replace_with=$2
+	escaped_to_replace=$(printf '%s\n' "$1" | sed -e 's/[]\/$*.^[]/\\&/g');
+	escaped_replace_with=$(printf '%s\n' "$2" | sed -e 's/[]\/$*.^[]/\\&/g');
+	str='s/'"$escaped_to_replace"'/'"$escaped_replace_with"'/g'
+	perl -pi -w -e $str `find . -type f -name "*.$3"`
+}
+
+listFileSizes() {
+for i in * .[^.]*; do 
+    echo $(du -hs $i)
+done
+}
+
+##############  SOLANA  ###################
+export PATH="/Users/apple/.local/share/solana/install/active_release/bin:$PATH"
+###########################################
+
+#### GPG fix ######
+export GPG_TTY=$(tty)
+###################
+
+##### Git override ########
+alias gcmsg='g commit -S -m'
